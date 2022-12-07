@@ -1,29 +1,9 @@
 #include <pthread.h>
 #include <stdio.h>
 
-pthread_t p1;
 pthread_t p2;
 int nums [32];
 pthread_mutex_t m0;
-
-void* thread1_start(void *arg)
-{
-    for (int i =0; i<10000; i++)
-    {
-        pthread_mutex_lock(&m0);
-        for (int l = 0; l < 32; l++)
-        {
-            nums[l] = nums[l] + 1;
-        }
-        printf("1\n");
-        pthread_mutex_unlock(&m0);
-        int tmp = 0;
-        for (int j = 0; j < 50000; j++)
-        {
-            tmp = tmp + 1;
-        }
-    }
-}
 
 void* thread2_start(void *arg)
 {
@@ -51,17 +31,28 @@ int main(void)
         printf("mutex init error\n");
         return 1;
     }
-    if (pthread_create(&p1, NULL, &thread1_start, NULL) != 0)
-    {
-        printf("create p1 error\n");
-        return 1;
-    }
     if (pthread_create(&p2, NULL, &thread2_start, NULL)!= 0)
     {
         printf("create p2 error\n");
         return 1;
     }
-    pthread_join(p1, NULL);
+
+    for (int i =0; i<10000; i++)
+    {
+        pthread_mutex_lock(&m0);
+        for (int l = 0; l < 32; l++)
+        {
+            nums[l] = nums[l] + 1;
+        }
+        printf("1\n");
+        pthread_mutex_unlock(&m0);
+        int tmp = 0;
+        for (int j = 0; j < 50000; j++)
+        {
+            tmp = tmp + 1;
+        }
+    }
+    
     pthread_join(p2, NULL);
     pthread_mutex_destroy(&m0);
     return 0;
