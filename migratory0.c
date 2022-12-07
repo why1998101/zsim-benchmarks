@@ -7,7 +7,7 @@ pthread_mutex_t m0;
 
 void* thread2_start(void *arg)
 {
-    for (int i =0; i<40; i++)
+    for (int i =0; i<16; i++)
     {
         int tmp = 0;
         for (int j = 0; j < 50000; j++)
@@ -37,7 +37,7 @@ int main(void)
         return 1;
     }
 
-    for (int i =0; i<40; i++)
+    for (int i =0; i<16; i++)
     {
         pthread_mutex_lock(&m0);
         for (int l = 0; l < 32; l++)
