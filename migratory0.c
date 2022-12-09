@@ -7,10 +7,10 @@ pthread_mutex_t m0;
 
 void* thread2_start(void *arg)
 {
-    for (int i =0; i<16; i++)
+    for (int i =0; i<2000; i++)
     {
         int tmp = 0;
-        for (int j = 0; j < 50000; j++)
+        for (int j = 0; j < 5000; j++)
         {
             tmp = tmp + 1;
         }
@@ -19,7 +19,6 @@ void* thread2_start(void *arg)
         {
             nums[l] = nums[l] - 1;
         }
-        printf("2\n");
         pthread_mutex_unlock(&m0);
     }
 }
@@ -37,17 +36,16 @@ int main(void)
         return 1;
     }
 
-    for (int i =0; i<16; i++)
+    for (int i =0; i<2000; i++)
     {
         pthread_mutex_lock(&m0);
         for (int l = 0; l < 32; l++)
         {
             nums[l] = nums[l] + 1;
         }
-        printf("1\n");
         pthread_mutex_unlock(&m0);
         int tmp = 0;
-        for (int j = 0; j < 50000; j++)
+        for (int j = 0; j < 5000; j++)
         {
             tmp = tmp + 1;
         }
@@ -55,5 +53,6 @@ int main(void)
     
     pthread_join(p2, NULL);
     pthread_mutex_destroy(&m0);
+    printf("0 done\n");
     return 0;
 }

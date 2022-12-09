@@ -6,7 +6,7 @@ int nums [32];
 
 void* thread2_start(void *arg)
 {
-    for (int i =0; i<100; i++)
+    for (int i =0; i<2000; i++)
     {
         int tmp = 0;
         for (int j = 0; j < 5000; j++)
@@ -30,7 +30,7 @@ int main(void)
         return 1;
     }
 
-    for (int i =0; i<100; i++)
+    for (int i =0; i<2000; i++)
     {
         for (int l = 0; l < 32; l++)
         {
@@ -44,5 +44,6 @@ int main(void)
     }
     
     pthread_join(p2, NULL);
+    printf("1 done\n");
     return 0;
 }
