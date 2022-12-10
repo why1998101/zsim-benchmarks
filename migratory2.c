@@ -64,6 +64,6 @@ int main(void)
     
     pthread_join(p2, NULL);
     pthread_mutex_destroy(&m0);
-    printf("0 done\n");
+    printf("3 done\n");
     return 0;
 }
