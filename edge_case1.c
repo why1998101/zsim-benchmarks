@@ -2,12 +2,19 @@
 #include <stdio.h>
 
 pthread_t p2;
-int nums [32];
 pthread_mutex_t m0;
+
+typedef struct {
+    int foo;
+    char bar;
+    void* zero;
+} Element;
+
+Element arr [32];
 
 void* thread2_start(void *arg)
 {
-    for (int i =0; i<2000; i++)
+    for (int i =0; i<50; i++)
     {
         int tmp = 0;
         for (int j = 0; j < 5000; j++)
@@ -17,9 +24,27 @@ void* thread2_start(void *arg)
         pthread_mutex_lock(&m0);
         for (int l = 0; l < 32; l++)
         {
-            nums[l] = nums[l] - 1;
+            arr[l].foo += 1;
+            arr[l].bar += 1;
+            arr[l].zero = 0;
         }
         pthread_mutex_unlock(&m0);
+    }
+    for (int i =0; i<4950; i++)
+    {
+        int tmp = 0;
+        for (int j = 0; j < 5000; j++)
+        {
+            tmp = tmp + 1;
+        }
+        for (int l = 0; l < 32; l++)
+        {
+            int x = arr[l].foo;
+            x += 1;
+            char y = arr[l].bar;
+            y += 1;
+            void* z = arr[l].zero;
+        }
     }
 }
 
@@ -36,14 +61,32 @@ int main(void)
         return 1;
     }
 
-    for (int i =0; i<2000; i++)
+    for (int i =0; i<50; i++)
     {
         pthread_mutex_lock(&m0);
         for (int l = 0; l < 32; l++)
         {
-            nums[l] = nums[l] + 1;
+            arr[l].foo -= 1;
+            arr[l].bar -= 1;
+            arr[l].zero = 1;
         }
         pthread_mutex_unlock(&m0);
+        int tmp = 0;
+        for (int j = 0; j < 5000; j++)
+        {
+            tmp = tmp + 1;
+        }
+    }
+    for (int i =0; i<4950; i++)
+    {
+        for (int l = 0; l < 32; l++)
+        {
+            int x = arr[l].foo;
+            x -= 1;
+            char y = arr[l].bar;
+            y -= 1;
+            void* z = arr[l].zero;
+        }
         int tmp = 0;
         for (int j = 0; j < 5000; j++)
         {
@@ -53,6 +96,6 @@ int main(void)
     
     pthread_join(p2, NULL);
     pthread_mutex_destroy(&m0);
-    printf("0 done\n");
+    printf("5 done\n");
     return 0;
 }
