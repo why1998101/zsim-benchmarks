@@ -25,6 +25,7 @@ void* thread2_start(void *arg)
 
 int main(void)
 {
+    nums[0] = 7;
     if (pthread_mutex_init(&m0, NULL) != 0)
     {
         printf("mutex init error\n");
@@ -53,6 +54,6 @@ int main(void)
     
     pthread_join(p2, NULL);
     pthread_mutex_destroy(&m0);
-    printf("0 done\n");
+    printf("0 done %d\n", nums[0]);
     return 0;
 }
